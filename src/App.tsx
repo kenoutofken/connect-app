@@ -9,11 +9,11 @@ function App() {
 
   return (
     <>
-      <QueryClientPRovider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
         <Header />
         <Separator />
         <LatestPosts />
-      </QueryClientPRovider>
+      </QueryClientProvider>
     </>
   );
 }
