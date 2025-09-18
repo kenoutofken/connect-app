@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import styles from "./latestPosts.module.css";
 import React from "react";
 import PostsSkeleton from "@/components/ui/skeletons/PostsSkeleton";
+import ErrorBoundary from "@/components/error/ErrorBoundary";
+import { Loader2 } from "lucide-react";
 
 export default function LatestPosts() {
   return (
@@ -15,9 +17,13 @@ export default function LatestPosts() {
           <PlusIcon className="size-6" /> Create Post
         </Button>
       </div>
-      <Suspense fallback={<PostsSkeleton />}>
-        <PostsList />
-      </Suspense>
+      <ErrorBoundary message="Failed to load posts">
+        <Suspense
+          fallback={<Loader2 className="animate-spin size-10 mx-auto m-12" />}
+        >
+          <PostsList />
+        </Suspense>
+      </ErrorBoundary>
     </main>
   );
 }

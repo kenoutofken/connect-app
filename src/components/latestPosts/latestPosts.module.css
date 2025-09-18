@@ -1,3 +1,7 @@
 .button {
-    background-color:blue;
+  background-color: blue;
+  color: white;
+  margin-top: -1.2rem;
+  padding: 1.6rem 1.4rem;
+  font-weight: 800;
 }
