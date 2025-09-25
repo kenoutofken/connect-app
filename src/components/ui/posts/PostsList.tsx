@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { ArrowRightIcon } from "@heroicons/react/24/solid";
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,23 @@ import styles from "@/components/ui/posts/postsList.module.css";
 
 export default function PostsList() {
   const [page, setPage] = useState(0);
+  const postListRef = useRef(null);
+  useEffect(() => {
+    if (postListRef.current) {
+      const observer = new MutationObserver(() => {
+        window.scrollBy({
+          left: 0,
+          top: window.innerHeight - 200,
+          behavior: "smooth",
+        });
+      });
+      observer.observe(postListRef.current, {
+        childList: true,
+      });
+      return () => observer.disconnect();
+    }
+  }, []);
+
   const { data, fetchNextPage, hasNextPage } = useSuspenseInfiniteQuery({
     queryKey: ["posts"],
     queryFn: ({ pageParam }) => fetchPosts(pageParam),
@@ -21,7 +38,7 @@ export default function PostsList() {
 
   return (
     <>
-      <ul>
+      <ul ref={postListRef}>
         {data.pages.map((page, pageIndex) => {
           return page.posts.map((post, postIndex) => (
             <Post
