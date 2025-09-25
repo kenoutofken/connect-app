@@ -11,7 +11,7 @@ function App() {
     <>
       <QueryClientProvider client={queryClient}>
         <Header />
-        <Separator />
+        <Separator className="sticky top-19" />
         <LatestPosts />
       </QueryClientProvider>
     </>

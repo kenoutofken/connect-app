@@ -1,9 +1,13 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 .navlink {
-    @apply text-slate-600 dark:text-slate-100 font-bold;
+  @apply text-slate-600 dark:text-slate-100 font-bold;
 }
 
 .navlink:hover {
-    @apply text-slate-400;
+  @apply text-slate-400;
+}
+
+.header {
+  @apply sticky top-0 flex justify-between items-center px-10 pt-5 pb-5 h-19 bg-white dark:bg-[#242424];
 }

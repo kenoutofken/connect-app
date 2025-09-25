@@ -1,7 +1,13 @@
-.button {
-  background-color: blue;
+@import "tailwindcss";
+
+.create_post_button {
+  background-color: rgb(33, 9, 248);
   color: white;
   margin-top: -1.2rem;
   padding: 1.6rem 1.4rem;
   font-weight: 800;
+}
+
+.latest_posts_container {
+  @apply sticky top-[77px] justify-between pt-8 bg-white dark:bg-[#242424] flex;
 }
