@@ -1,6 +1,8 @@
 import { MegaphoneIcon } from "@heroicons/react/24/solid";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import styles from "./header.module.css";
+import { NavLink } from "react-router";
+import { type ClassnameProps } from "@/lib/types/post";
 
 export default function Header() {
   return (
@@ -17,19 +19,34 @@ export default function Header() {
         <nav>
           <ul className="flex gap-10">
             <li>
-              <a className={`text-sm ${styles.navlink}`} href="/members">
+              <NavLink
+                className={({ isActive }: ClassnameProps) =>
+                  isActive ? styles.navlinkActive : styles.navlink
+                }
+                to="/members"
+              >
                 Members
-              </a>
+              </NavLink>
             </li>
             <li>
-              <a className={`text-sm ${styles.navlink}`} href="/notifications">
+              <NavLink
+                className={({ isActive }: ClassnameProps) =>
+                  isActive ? styles.navlinkActive : styles.navlink
+                }
+                to="/notifications"
+              >
                 Notifications
-              </a>
+              </NavLink>
             </li>
             <li>
-              <a className={`text-sm ${styles.navlink}`} href="/messages">
+              <NavLink
+                className={({ isActive }): ClassnameProps =>
+                  isActive ? styles.navlinkActive : styles.navlink
+                }
+                to="/messages"
+              >
                 Messages
-              </a>
+              </NavLink>
             </li>
           </ul>
         </nav>

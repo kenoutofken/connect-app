@@ -18,9 +18,7 @@ export default function LatestPosts() {
         </Button>
       </div>
       <ErrorBoundary message="Failed to load posts">
-        <Suspense
-          fallback={<Loader2 className="animate-spin size-10 mx-auto m-12" />}
-        >
+        <Suspense fallback={<PostsSkeleton />}>
           <PostsList />
         </Suspense>
       </ErrorBoundary>

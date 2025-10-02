@@ -17,3 +17,9 @@ export interface PostsResponse {
   skip: number;
   limit: number;
 }
+
+export interface ClassnameProps {
+  isActive: boolean;
+  isPending: boolean;
+  isTransitioning: boolean;
+}
