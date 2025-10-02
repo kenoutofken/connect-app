@@ -9,12 +9,12 @@ export default function Header() {
     <header className={styles.header}>
       <div className="flex">
         <h1 className="mr-8">
-          <a
-            href="/"
+          <NavLink
+            to="/"
             className={`flex text-lg/1.3 font-extrabold ${styles.navlink}`}
           >
             <MegaphoneIcon className="size-6 mr-3" /> Contact
-          </a>
+          </NavLink>
         </h1>
         <nav>
           <ul className="flex gap-10">
