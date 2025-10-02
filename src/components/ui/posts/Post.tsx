@@ -39,7 +39,7 @@ export default function Post(props: Props) {
           className="aspect-[7/4] h-42 object-cover ml-auto rounded-lg"
         />
       </div>
-      {!isLast && <Separator className="!w-auto mx-4 mt-5 mb-10" />}
+      {!isLast && <Separator className={styles.separator} />}
     </li>
   );
 }
