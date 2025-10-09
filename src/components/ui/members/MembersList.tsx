@@ -1,11 +1,25 @@
+import { useCallback, useState } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { Input } from "@/components/ui/input";
 import Member from "./Member";
 import { fetchMembers } from "@/lib/api";
 import styles from "./MembersList.module.css";
+import { type Member as MemberType } from "@/lib/types/member";
 
 export default function MembersList() {
+  const [nameFilter, setNameFilter] = useState("");
+
+  const filterMembers = useCallback(
+    (member: MemberType) => {
+      return (
+        member.firstName.toLowerCase().includes(nameFilter.toLowerCase()) ||
+        member.lastName.toLowerCase().includes(nameFilter.toLowerCase())
+      );
+    },
+    [nameFilter]
+  );
+
   const { data } = useSuspenseQuery({
     queryKey: ["members"],
     queryFn: () => fetchMembers(),
@@ -16,12 +30,14 @@ export default function MembersList() {
     <>
       <Input
         name="search-members"
+        value={nameFilter}
+        onChange={(event) => setNameFilter(event.target.value)}
         placeholder="Search members"
         className={styles.searchField}
       />
       <MagnifyingGlassIcon className="size-5 relative -top-8 left-4 text-gray-400" />
       <ul className="mt-3">
-        {data.users.map((user) => (
+        {data.users.filter(filterMembers).map((user) => (
           <Member key={user.id} member={user} />
         ))}
       </ul>
