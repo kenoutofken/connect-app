@@ -1,12 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { type Member } from "@/lib/types/member";
 import styles from "./member.module.css";
+import { useNavigate } from "react-router";
 
 interface Props {
   member: Member;
 }
 export default function Member(props: Props) {
   const { member } = props;
+  const navigate = useNavigate();
 
   return (
     <li key={member.id} className="flex mb-8">
@@ -19,7 +21,12 @@ export default function Member(props: Props) {
           {`${member.address.city}, ${member.address.country}, | ${member.company.name}`}{" "}
           | ${member.company.title}
         </p>
-        <Button className={styles.viewPostsButton}>View Posts</Button>
+        <Button
+          className={styles.viewPostsButton}
+          onClick={() => navigate(`/members/${member.id}/posts`)}
+        >
+          View Posts
+        </Button>
       </div>
       <img
         src={`/avatars/${member.id}.png`}

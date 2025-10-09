@@ -5,6 +5,7 @@ import Members from "@/components/screens/members/Members";
 import Notifications from "@/components/screens/notificaitons/Notifications";
 import Messages from "@/components/screens/messages/Messages";
 import NotFound from "@/components/screens/notFound/NotFound";
+import PostsbyMember from "@/components/screens/members/PostsbyMember";
 
 const routes: RouteObject[] = [
   {
@@ -13,6 +14,7 @@ const routes: RouteObject[] = [
     children: [
       { index: true, Component: LatestPosts },
       { path: "/members", Component: Members },
+      { path: "/members/:id/posts", Component: PostsbyMember },
       { path: "/notifications", Component: Notifications },
       { path: "/messages/", Component: Messages },
       { path: "*", Component: NotFound },
