@@ -11,28 +11,36 @@ export default function Member(props: Props) {
   const navigate = useNavigate();
 
   return (
-    <li key={member.id} className="flex mb-8">
-      <div className="mr-4 mb-8">
-        <h3 className="mb-1 text-lg font-semibold">
-          {`${member.firstName} ${member.lastName}`}
-        </h3>
+    <>
+      <li key={member.id} className="flex mb-8 pb-4 border-b last:border-b-0">
+        <img
+          src={`/avatars/${member.id}.png`}
+          alt={`${member.firstName} ${member.lastName}'s Avatar`}
+          className="inline-block md:hidden max-w-[20%] aspect-square mr-5 mb-3 h-42 object-contain rounded-lg"
+        />
+        <div className="mr-4 mb-8">
+          <h3 className="mb-1 text-lg font-semibold">
+            {`${member.firstName} ${member.lastName}`}
+          </h3>
 
-        <p className={styles.memberBio}>
-          {`${member.address.city}, ${member.address.country}, | ${member.company.name}`}{" "}
-          | ${member.company.title}
-        </p>
-        <Button
-          className={styles.viewPostsButton}
-          onClick={() => navigate(`/members/${member.id}/posts`)}
-        >
-          View Posts
-        </Button>
-      </div>
-      <img
-        src={`/avatars/${member.id}.png`}
-        alt={`${member.firstName} ${member.lastName}'s Avatar`}
-        className="aspect-[7/4] h-42 object-cover ml-auto rounded-lg"
-      />
-    </li>
+          <p className={styles.memberBio}>
+            {`${member.address.city}, ${member.address.country}, | ${member.company.name}`}{" "}
+            | ${member.company.title}
+          </p>
+
+          <Button
+            className={styles.viewPostsButton}
+            onClick={() => navigate(`/members/${member.id}/posts`)}
+          >
+            View Posts
+          </Button>
+        </div>
+        <img
+          src={`/avatars/${member.id}.png`}
+          alt={`${member.firstName} ${member.lastName}'s Avatar`}
+          className="hidden md:inline-block ml-auto aspect-[8/4] h-42 object-cover rounded-lg"
+        />
+      </li>
+    </>
   );
 }
