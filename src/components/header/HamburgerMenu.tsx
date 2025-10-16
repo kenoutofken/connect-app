@@ -21,6 +21,7 @@ interface MenuItem {
 
 interface MenuItemProps {
   item: MenuItem;
+  clickHandler: () => void;
 }
 
 const menuItems: MenuItem[] = [
@@ -30,7 +31,7 @@ const menuItems: MenuItem[] = [
   { title: "Messages", href: "/messages" },
 ];
 
-const MenuItem = ({ item }: MenuItemProps) => {
+const MenuItem = ({ item, clickHandler }: MenuItemProps) => {
   return (
     <div className="flex items-center">
       {item.href === "/" && <MegaphoneIcon className="size-6 mr-3" />}
@@ -47,6 +48,7 @@ const MenuItem = ({ item }: MenuItemProps) => {
                 item.href === "/" && "pl-0"
               )
         }
+        onClick={clickHandler}
       >
         {item.title}
       </NavLink>
@@ -77,7 +79,11 @@ export default function HamburgerMenu() {
         </SheetDescription>
         <nav className="flex flex-col">
           {menuItems.map((item) => (
-            <MenuItem key={item.href} item={item} />
+            <MenuItem
+              key={item.href}
+              item={item}
+              clickHandler={() => setOpen(false)}
+            />
           ))}
         </nav>
       </SheetContent>
