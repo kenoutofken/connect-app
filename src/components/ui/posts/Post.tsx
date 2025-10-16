@@ -3,7 +3,6 @@ import { Separator } from "@/components/ui/separator";
 import Tag from "@/components/ui/posts/Tag";
 import { type Post } from "@/lib/types/post";
 import styles from "./postsList.module.css";
-import { Heart } from "lucide-react";
 
 interface Props {
   post: Post;
@@ -18,13 +17,18 @@ export default function Post(props: Props) {
         <article className="mr-4">
           <h3 className="mb-1 text-xl font-semibold">{post.title}</h3>
           <p className={styles.postBody}>{post.body}</p>
+          <img
+            src={`/photos/${post.id}.jpg`}
+            alt={post.title}
+            className="md:hidden inline-block aspect-[7/4] h-42 object-cover ml-auto rounded-lg"
+          />
           <div className="my-6">
             {post.tags.map((tag) => (
               <Tag key={tag} tag={tag} />
             ))}
           </div>
           <div className="ml-4">
-            <Heart className="inline size-5 mr-2" />
+            <HeartIcon className="inline size-5 mr-2" />
             <span className={styles.postLikesAndViews}>
               {post.reactions.likes}
             </span>
@@ -36,7 +40,7 @@ export default function Post(props: Props) {
         <img
           src={`/photos/${post.id}.jpg`}
           alt={post.title}
-          className="aspect-[7/4] h-42 object-cover ml-auto rounded-lg"
+          className="hidden md:inline-block aspect-[7/4] h-42 object-cover ml-auto rounded-lg"
         />
       </div>
       {!isLast && <Separator className={styles.separator} />}
