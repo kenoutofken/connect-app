@@ -1,6 +1,6 @@
-import { useMemo, useCallback, useState } from "react";
+import { useMemo, useCallback, useRef, useState } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { Input } from "@/components/ui/input";
 import Member from "./Member";
 import { fetchMembers } from "@/lib/api";
@@ -9,6 +9,7 @@ import { type Member as MemberType } from "@/lib/types/member";
 
 export default function MembersList() {
   const [nameFilter, setNameFilter] = useState("");
+  const inputRef = useRef(null);
 
   const filterMembers = useCallback(
     (member: MemberType) => {
@@ -26,28 +27,11 @@ export default function MembersList() {
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
-  /*
-  const filteredMembers = data.users.filter(filterMembers);
-
-  if (nameFilter && filteredMembers.length === 0) {
-    return (
-      <>
-        <Input
-          name="search-members"
-          value={nameFilter}
-          onChange={(event) => setNameFilter(event.target.value)}
-          placeholder="Search members"
-          className={styles.searchField}
-        />
-        <MagnifyingGlassIcon className="size-5 relative -top-8 left-4 text-gray-400" />
-        <h3 className="mt-4">
-          Sorry, there are no members matching "{nameFilter}".
-        </h3>
-      </>
-    );
-  }
-
-  */
+  const clearField = () => {
+    setNameFilter("");
+    // put cursor back in the field for a quick new search
+    inputRef.current?.focus();
+  };
 
   const filteredMembers = useMemo(
     () =>
@@ -61,14 +45,22 @@ export default function MembersList() {
 
   return (
     <>
-      <Input
-        name="search-members"
-        value={nameFilter}
-        onChange={(event) => setNameFilter(event.target.value)}
-        placeholder="Search members"
-        className={styles.searchField}
-      />
-      <MagnifyingGlassIcon className="size-5 relative -top-8 left-4 text-gray-400" />
+      <div className="relative">
+        <Input
+          name="search-members"
+          value={nameFilter}
+          onChange={(event) => setNameFilter(event.target.value)}
+          placeholder="Search members"
+          className={`pl-10 ${styles.searchField}`}
+        />
+        <MagnifyingGlassIcon className="size-5 absolute top-1/2 left-3 -translate-y-1/2 text-gray-400" />
+        <XMarkIcon
+          className={`${
+            nameFilter ? "block" : "invisible"
+          } size-5 absolute top-1/2 right-5 -translate-y-1/2 text-gray-400 cursor-pointer`}
+          onClick={clearField}
+        />
+      </div>
       <ul className="mt-3">
         {filteredMembers.length === 0 ? (
           <li className="text-gray-500">
