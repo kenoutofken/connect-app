@@ -15,3 +15,11 @@
 .header {
   @apply sticky top-0 flex justify-between items-center px-10 pt-5 pb-5 h-19 bg-white dark:bg-[#242424];
 }
+
+.sheet {
+  @apply w-60 bg-white dark:bg-[#242424];
+}
+
+.sheetButton {
+  @apply md:hidden dark:bg-gray-100;
+}

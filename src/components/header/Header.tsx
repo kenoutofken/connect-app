@@ -2,12 +2,14 @@ import { MegaphoneIcon } from "@heroicons/react/24/solid";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import styles from "./header.module.css";
 import { NavLink } from "react-router";
+import HamburgerMenu from "@/components/header/HamburgerMenu";
 import { type ClassnameProps } from "@/lib/types/post";
 
 export default function Header() {
   return (
     <header className={styles.header}>
-      <div className="flex">
+      <HamburgerMenu />
+      <div className="md:flex hidden">
         <h1 className="mr-8">
           <NavLink
             to="/"
