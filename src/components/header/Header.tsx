@@ -3,9 +3,12 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import styles from "./header.module.css";
 import { NavLink } from "react-router";
 import HamburgerMenu from "@/components/header/HamburgerMenu";
+import { useAppStore } from "@/lib/appStore";
 import { type ClassnameProps } from "@/lib/types/post";
 
 export default function Header() {
+  const { user, isAuthenticated } = useAppStore();
+
   return (
     <header className={styles.header}>
       <HamburgerMenu />
@@ -53,10 +56,19 @@ export default function Header() {
           </ul>
         </nav>
       </div>
-      <Avatar className="size-10">
-        <AvatarImage src="avatars/7.png" />
-        <AvatarFallback>LKY</AvatarFallback>
-      </Avatar>
+      {isAuthenticated && user ? (
+        <Avatar className="size-10">
+          <AvatarImage src={`avatars/${user.id}.png`} />
+          <AvatarFallback>LKY</AvatarFallback>
+        </Avatar>
+      ) : (
+        <NavLink
+          to="/login"
+          className={`flex text-lg/1.3 font-extrabold ${styles.navlink}`}
+        >
+          Sign In
+        </NavLink>
+      )}
     </header>
   );
 }
