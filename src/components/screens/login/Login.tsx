@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+import { useNavigate } from "react-router";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -28,13 +29,18 @@ export default function Login() {
     },
   });
 
+  const navigate = useNavigate();
   const { login } = useAppStore();
 
   const onLogin = useCallback(
     async (values: z.infer<typeof loginSchema>) => {
-      await login(values);
+      const loginResult = await login(values);
+      if (loginResult) {
+        navigate(-1);
+        return null;
+      }
     },
-    [login]
+    [login, navigate]
   );
 
   return (
