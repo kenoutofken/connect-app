@@ -5,9 +5,10 @@ import { NavLink } from "react-router";
 import HamburgerMenu from "@/components/header/HamburgerMenu";
 import { useAppStore } from "@/lib/appStore";
 import { type ClassnameProps } from "@/lib/types/post";
+import { Button } from "../ui/button";
 
 export default function Header() {
-  const { user, isAuthenticated } = useAppStore();
+  const { logout, user, isAuthenticated } = useAppStore();
 
   return (
     <header className={styles.header}>
@@ -57,10 +58,19 @@ export default function Header() {
         </nav>
       </div>
       {isAuthenticated && user ? (
-        <Avatar className="size-10">
-          <AvatarImage src={`avatars/${user.id}.png`} />
-          <AvatarFallback>LKY</AvatarFallback>
-        </Avatar>
+        <div className="flex items-center">
+          <Avatar className="size-10">
+            <AvatarImage src={`avatars/${user.id}.png`} />
+            <AvatarFallback>LKY</AvatarFallback>
+          </Avatar>
+          <Button
+            variant="link"
+            className={styles.signOutButton}
+            onClick={logout}
+          >
+            Sign Out
+          </Button>
+        </div>
       ) : (
         <NavLink
           to="/login"
