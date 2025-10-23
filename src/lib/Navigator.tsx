@@ -6,6 +6,7 @@ import Notifications from "@/components/screens/notificaitons/Notifications";
 import Messages from "@/components/screens/messages/Messages";
 import NotFound from "@/components/screens/notFound/NotFound";
 import PostsbyMember from "@/components/screens/members/PostsbyMember";
+import Login from "@/components/screens/login/Login";
 
 const routes: RouteObject[] = [
   {
@@ -16,7 +17,8 @@ const routes: RouteObject[] = [
       { path: "/members", Component: Members },
       { path: "/members/:id/posts", Component: PostsbyMember },
       { path: "/notifications", Component: Notifications },
-      { path: "/messages/", Component: Messages },
+      { path: "/messages", Component: Messages },
+      { path: "/login", Component: Login },
       { path: "*", Component: NotFound },
     ],
   },
