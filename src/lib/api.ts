@@ -35,5 +35,8 @@ export function loginUser(
       username: crednetials.username,
       password: crednetials.password,
     })
-    .then((response) => response.data);
+    .then((response) => response.data)
+    .catch((error) => {
+      return Promise.reject(error);
+    });
 }

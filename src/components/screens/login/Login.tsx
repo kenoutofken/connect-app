@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -30,7 +31,7 @@ export default function Login() {
   });
 
   const navigate = useNavigate();
-  const { login } = useAppStore();
+  const { error, login } = useAppStore();
 
   const onLogin = useCallback(
     async (values: z.infer<typeof loginSchema>) => {
@@ -84,6 +85,12 @@ export default function Login() {
           <Button type="submit" className={styles.loginButton}>
             Sign In
           </Button>
+          {error && (
+            <div className="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded flex items-center">
+              <ExclamationTriangleIcon className="h-5 w-5 mr-2" />
+              <span>{error}</span>
+            </div>
+          )}
         </form>
       </Form>
     </div>

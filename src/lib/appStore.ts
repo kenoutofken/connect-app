@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { loginUser } from "./api";
 import { type LoginCredentials, type AuthResponse } from "@/lib/types/member";
+import { AxiosError } from "axios";
 
 interface UserState {
   user: AuthResponse | null;
@@ -17,7 +18,8 @@ interface UserActions {
 
 type AppStoreUser = UserActions & UserState;
 
-const createUserSlice = (set): AppStoreUser => ({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const createUserSlice = (set: any): AppStoreUser => ({
   user: null,
   isAuthenticated: false,
   isLoading: false,
@@ -29,7 +31,11 @@ const createUserSlice = (set): AppStoreUser => ({
       set({ user: response, isAuthenticated: true, isLoading: false });
       return response;
     } catch (error) {
-      set({ error: (error as Error).message, isLoading: false });
+      if (error instanceof AxiosError) {
+        set({ error: error.response?.data.message, isLoading: false });
+      } else {
+        set({ error: "An unknown error occurred", isLoading: false });
+      }
     }
   },
   logout: () => set({ user: null, isAuthenticated: false }),

@@ -45,7 +45,7 @@ export default function Header() {
             </li>
             <li>
               <NavLink
-                className={({ isActive }): ClassnameProps =>
+                className={({ isActive }: ClassnameProps) =>
                   isActive ? styles.navlinkActive : styles.navlink
                 }
                 to="/messages"
