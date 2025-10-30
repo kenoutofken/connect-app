@@ -1,13 +1,15 @@
-import { Suspense, useContext } from "react";
+import { Suspense, useCallback, useContext } from "react";
 import PostsList from "@/components/ui/posts/PostsList";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { Button } from "@/components/ui/button";
 import styles from "./latestPosts.module.css";
-import React from "react";
 import PostsSkeleton from "@/components/ui/skeletons/PostsSkeleton";
+import { CREATE_POST_AUTH_NOTICE } from "@/lib/constants";
 import ErrorBoundary from "@/components/error/ErrorBoundary";
+import { useAppStore } from "@/lib/appStore";
 import { PostsLastPageContext } from "@/lib/contexts/PostsLastPageContext";
 import { useNavigate, Outlet } from "react-router";
+import { toast } from "sonner";
 
 export default function LatestPosts() {
   const context = useContext(PostsLastPageContext);
@@ -18,13 +20,23 @@ export default function LatestPosts() {
 
   const navigate = useNavigate();
 
+  const { isAuthenticated } = useAppStore();
+
+  const navigateAuthenticated = useCallback(() => {
+    if (!isAuthenticated) {
+      toast.error(CREATE_POST_AUTH_NOTICE, { position: "top-right" });
+      return;
+    }
+    navigate("create-post");
+  }, [isAuthenticated, navigate]);
+
   return (
     <>
       <div className={styles.latest_posts_container}>
         <h2 className="text-4xl font-bold mb-6">Latest Posts</h2>
         <Button
           className={styles.create_post_button}
-          onClick={() => navigate("create-post")}
+          onClick={navigateAuthenticated}
         >
           <PlusIcon className="size-6" /> Create Post
         </Button>

@@ -4,6 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import { Outlet } from "react-router";
 import "./App.css";
 import { PostsLastPageProvider } from "@/lib/contexts/PostsLastPageProvider";
+import { Toaster } from "@/components/ui/sonner";
 
 function App() {
   const queryClient = new QueryClient();
@@ -18,6 +19,7 @@ function App() {
             <Outlet />
           </PostsLastPageProvider>
         </main>
+        <Toaster position="top-right" richColors closeButton />
       </QueryClientProvider>
     </>
   );

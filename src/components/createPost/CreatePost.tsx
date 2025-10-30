@@ -31,8 +31,10 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import styles from "@/components/latestPosts/latestPosts.module.css";
-import type { fr } from "zod/v4/locales";
 import TagChip from "@/components/createPost/TagChip";
+import { useAppStore } from "@/lib/appStore";
+import { CREATE_POST_AUTH_NOTICE } from "@/lib/constants";
+import { toast } from "sonner";
 
 const allTags = [
   "american",
@@ -66,6 +68,12 @@ export default function CreatePost() {
 
   const navigate = useNavigate();
 
+  const { isAuthenticated } = useAppStore();
+
+  if (!isAuthenticated) {
+    toast.error(CREATE_POST_AUTH_NOTICE, { position: "top-right" });
+  }
+
   const addTag = useCallback(
     (tag: string) => {
       if (tag && !selectedTags.includes(tag)) {
@@ -87,101 +95,105 @@ export default function CreatePost() {
   );
 
   return (
-    <Dialog
-      defaultOpen
-      onOpenChange={(open) => {
-        if (!open) {
-          navigate(-1);
-        }
-      }}
-    >
-      <DialogContent className={styles.dialog}>
-        <DialogDescription className="sr-only">
-          Create New Post Form
-        </DialogDescription>
-        <DialogHeader>
-          <DialogTitle className={styles.dialogTitle}>Create Post</DialogTitle>
-        </DialogHeader>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit((data) => {
-              console.log(data);
-            })}
-          >
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem className="mb-8">
-                  <FormControl>
-                    <Input
-                      placeholder="Title"
-                      className={styles.body}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="body"
-              render={({ field }) => (
-                <FormItem className="mb-8">
-                  <FormControl>
-                    <Textarea
-                      placeholder="What's on your mind?"
-                      className={styles.body}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="border border-gray-300 mb-2 px-4 pt-2 pb-3 rounded-md">
-              {selectedTags.length === 0 ? (
-                <span className="text-gray-400 cursor-default">
-                  Tags appear here
-                </span>
-              ) : (
-                selectedTags.map((tag) => {
-                  return <TagChip key={tag} tag={tag} onDelete={removeTag} />;
-                })
-              )}
-            </div>
-            <Select onValueChange={(value) => addTag(value)}>
-              <SelectTrigger className="w-48">
-                <SelectValue placeholder="Select some tags">
-                  Select some tags
-                </SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Available Tags</SelectLabel>
-                  {availableTags.map((tag) => (
-                    <SelectItem key={tag} value={tag}>
-                      {tag}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </form>
-        </Form>
-        <DialogFooter>
-          <Button
-            type="submit"
-            onClick={form.handleSubmit((data) => {
-              console.log(data);
-              navigate(-1);
-            })}
-          >
-            Create Post
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    isAuthenticated && (
+      <Dialog
+        defaultOpen
+        onOpenChange={(open) => {
+          if (!open) {
+            navigate(-1);
+          }
+        }}
+      >
+        <DialogContent className={styles.dialog}>
+          <DialogDescription className="sr-only">
+            Create New Post Form
+          </DialogDescription>
+          <DialogHeader>
+            <DialogTitle className={styles.dialogTitle}>
+              Create Post
+            </DialogTitle>
+          </DialogHeader>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit((data) => {
+                console.log(data);
+              })}
+            >
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem className="mb-8">
+                    <FormControl>
+                      <Input
+                        placeholder="Title"
+                        className={styles.body}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="body"
+                render={({ field }) => (
+                  <FormItem className="mb-8">
+                    <FormControl>
+                      <Textarea
+                        placeholder="What's on your mind?"
+                        className={styles.body}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="border border-gray-300 mb-2 px-4 pt-2 pb-3 rounded-md">
+                {selectedTags.length === 0 ? (
+                  <span className="text-gray-400 cursor-default">
+                    Tags appear here
+                  </span>
+                ) : (
+                  selectedTags.map((tag) => {
+                    return <TagChip key={tag} tag={tag} onDelete={removeTag} />;
+                  })
+                )}
+              </div>
+              <Select onValueChange={(value) => addTag(value)}>
+                <SelectTrigger className="w-48">
+                  <SelectValue placeholder="Select some tags">
+                    Select some tags
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Available Tags</SelectLabel>
+                    {availableTags.map((tag) => (
+                      <SelectItem key={tag} value={tag}>
+                        {tag}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </form>
+          </Form>
+          <DialogFooter>
+            <Button
+              type="submit"
+              onClick={form.handleSubmit((data) => {
+                console.log(data);
+                navigate(-1);
+              })}
+            >
+              Create Post
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    )
   );
 }
