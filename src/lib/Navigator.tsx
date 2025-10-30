@@ -1,6 +1,7 @@
 import { type RouteObject } from "react-router";
 import App from "@/App";
 import LatestPosts from "@/components/latestPosts/latestPosts";
+import CreatePost from "@/components/createPost/CreatePost";
 import Members from "@/components/screens/members/Members";
 import Notifications from "@/components/screens/notificaitons/Notifications";
 import Messages from "@/components/screens/messages/Messages";
@@ -13,7 +14,11 @@ const routes: RouteObject[] = [
     path: "/",
     Component: App,
     children: [
-      { index: true, Component: LatestPosts },
+      {
+        path: "/",
+        Component: LatestPosts,
+        children: [{ path: "create-post", Component: CreatePost }],
+      },
       { path: "/members", Component: Members },
       { path: "/members/:id/posts", Component: PostsbyMember },
       { path: "/notifications", Component: Notifications },

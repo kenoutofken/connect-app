@@ -7,6 +7,7 @@ import React from "react";
 import PostsSkeleton from "@/components/ui/skeletons/PostsSkeleton";
 import ErrorBoundary from "@/components/error/ErrorBoundary";
 import { PostsLastPageContext } from "@/lib/contexts/PostsLastPageContext";
+import { useNavigate, Outlet } from "react-router";
 
 export default function LatestPosts() {
   const context = useContext(PostsLastPageContext);
@@ -14,13 +15,20 @@ export default function LatestPosts() {
     throw new Error("LatestPosts must be used within a PostsLastPageProvider");
   }
   const { page, setPage } = context;
+
+  const navigate = useNavigate();
+
   return (
     <>
       <div className={styles.latest_posts_container}>
         <h2 className="text-4xl font-bold mb-6">Latest Posts</h2>
-        <Button className={`${styles.create_post_button}`}>
+        <Button
+          className={styles.create_post_button}
+          onClick={() => navigate("create-post")}
+        >
           <PlusIcon className="size-6" /> Create Post
         </Button>
+        <Outlet />
       </div>
       <ErrorBoundary message="Failed to load posts">
         <Suspense fallback={<PostsSkeleton />}>
