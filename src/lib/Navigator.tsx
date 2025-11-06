@@ -17,7 +17,12 @@ const routes: RouteObject[] = [
       {
         path: "/",
         Component: LatestPosts,
-        children: [{ path: "create-post", Component: CreatePost }],
+        children: [
+          {
+            path: "create-post",
+            Component: CreatePost,
+          },
+        ],
       },
       { path: "/members", Component: Members },
       { path: "/members/:id/posts", Component: PostsbyMember },

@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useNavigate } from "react-router";
+import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "../ui/button";
 import {
   Dialog,
@@ -35,6 +36,8 @@ import TagChip from "@/components/createPost/TagChip";
 import { useAppStore } from "@/lib/appStore";
 import { CREATE_POST_AUTH_NOTICE } from "@/lib/constants";
 import { toast } from "sonner";
+import type { Post, PostsCacheState } from "@/lib/types/post";
+import { createPost } from "@/lib/api";
 
 const allTags = [
   "american",
@@ -67,11 +70,14 @@ export default function CreatePost() {
   });
 
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-  const { isAuthenticated } = useAppStore();
+  const { isAuthenticated, user } = useAppStore();
 
   if (!isAuthenticated) {
-    toast.error(CREATE_POST_AUTH_NOTICE, { position: "top-right" });
+    toast.error(CREATE_POST_AUTH_NOTICE, {
+      position: "top-right",
+    });
   }
 
   const addTag = useCallback(
@@ -93,6 +99,26 @@ export default function CreatePost() {
     },
     [selectedTags, availableTags]
   );
+
+  const addPost = useCallback(async () => {
+    const newPost: Post = await createPost(
+      user!.id,
+      user!.accessToken,
+      form.getValues("title"),
+      form.getValues("body"),
+      selectedTags
+    );
+    newPost.reactions = {
+      likes: 0,
+      dislikes: 0,
+    };
+    newPost.views = 0;
+    queryClient.setQueryData(["posts"], (oldData: PostsCacheState) => {
+      oldData.pages[0].posts.unshift(newPost);
+      return oldData;
+    });
+    navigate("/");
+  }, [form, navigate, selectedTags, user]);
 
   return (
     isAuthenticated && (
@@ -182,13 +208,7 @@ export default function CreatePost() {
             </form>
           </Form>
           <DialogFooter>
-            <Button
-              type="submit"
-              onClick={form.handleSubmit((data) => {
-                console.log(data);
-                navigate(-1);
-              })}
-            >
+            <Button type="submit" onClick={addPost}>
               Create Post
             </Button>
           </DialogFooter>

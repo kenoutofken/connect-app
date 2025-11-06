@@ -19,7 +19,22 @@ function App() {
             <Outlet />
           </PostsLastPageProvider>
         </main>
-        <Toaster position="top-right" richColors closeButton />
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            style: {
+              background: "#fff",
+              color: "#1f2937", // slate-800 text
+              border: "1px solid #242424",
+              fontWeight: 500,
+            },
+            classNames: {
+              error: "bg-white text-red-600 border border-red-400",
+              success: "bg-white text-green-600 border border-green-400",
+            },
+            closeButton: true,
+          }}
+        />
       </QueryClientProvider>
     </>
   );

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { type PostsResponse } from "@/lib/types/post";
+import { type Post, type PostsResponse } from "@/lib/types/post";
 import {
   type MembersResponse,
   type LoginCredentials,
@@ -39,4 +39,29 @@ export function loginUser(
     .catch((error) => {
       return Promise.reject(error);
     });
+}
+
+export function createPost(
+  userId: number,
+  token: string,
+  title: string,
+  body: string,
+  tags: string[]
+): Promise<Post> {
+  return axios
+    .post(
+      `${API_BASE_URL}/post/add`,
+      {
+        userId,
+        title,
+        body,
+        tags,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    .then((response) => response.data);
 }
